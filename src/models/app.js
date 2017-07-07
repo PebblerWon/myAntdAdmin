@@ -9,11 +9,10 @@ export default {
   state: {
     user: {},
     menuPopoverVisible: false,
-    //siderFold: localStorage.getItem(`${prefix}siderFold`) === 'true',
-    siderFold: true,
+    siderFold: localStorage.getItem(`${prefix}siderFold`) === 'true',
     darkTheme: localStorage.getItem(`${prefix}darkTheme`) === 'true',
     isNavbar: document.body.clientWidth < 769,
-    navOpenKeys: JSON.parse(localStorage.getItem(`${prefix}navOpenKeys`)) || [],
+    navOpenKeys: [],
   },  
   reducers: {
     querySuccess (state, { payload: user }) {
@@ -23,7 +22,6 @@ export default {
       }
     },
     test(state){
-
     	console.log(state);
     	return{...state}
     },
@@ -56,7 +54,6 @@ export default {
         isNavbar: payload,
       }
     },
-
     handleNavOpenKeys (state, { payload: navOpenKeys }) {
       return {
         ...state,

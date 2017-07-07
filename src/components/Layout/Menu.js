@@ -7,48 +7,61 @@ import pathToRegexp from 'path-to-regexp'
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
-const Menus=({siderFold,navOpenKeys})=>{
+const Menus=({siderFold,navOpenKeys,changeOpenkeys})=>{
+	//设置只打开当前父级菜单
 	const onOpenChange = (openKeys) => {
-	    const latestOpenKey = openKeys.find(key => !(navOpenKeys.indexOf(key) > -1))
-	    const latestCloseKey = navOpenKeys.find(key => !(openKeys.indexOf(key) > -1))
-	    let nextOpenKeys = []
+	    const latestOpenKey = openKeys.find(key => !(navOpenKeys.indexOf(key) > -1));
+	    const latestCloseKey = navOpenKeys.find(key => !(openKeys.indexOf(key) > -1));
+
+	    let nextOpenKeys = [];
 	    if (latestOpenKey) {
-	      nextOpenKeys = getAncestorKeys(latestOpenKey).concat(latestOpenKey)
+	      nextOpenKeys = getAncestorKeys(latestOpenKey).concat(latestOpenKey);
 	    }
 	    if (latestCloseKey) {
-	      nextOpenKeys = getAncestorKeys(latestCloseKey)
+	      nextOpenKeys = getAncestorKeys(latestCloseKey);
 	    }
-	    changeOpenKeys(nextOpenKeys)
+	    changeOpenkeys(nextOpenKeys);
   	}
+  	const getAncestorKeys = (key) => {
+  		//表明父子关系，sub3的祖先元素为sub2
+	    const map = {
+	      sub3: ['sub2'],
+	    };
+	    return map[key] || [];
+    }
 	let menuProps = !siderFold ? {
     	onOpenChange,
     	openKeys: navOpenKeys,
   	} : {}
 	return(
-		<Menu mode={siderFold?"vertical":"inline"}>
-			<SubMenu key="sub1" title={<span><Icon type="mail" /><span>Navigation One</span></span>}>
-	          <MenuItemGroup key="g1" title="Item 1">
-	            <Menu.Item key="1">Option 1</Menu.Item>
-	            <Menu.Item key="2">Option 2</Menu.Item>
-	          </MenuItemGroup>
-	          <MenuItemGroup key="g2" title="Item 2">
-	            <Menu.Item key="3">Option 3</Menu.Item>
-	            <Menu.Item key="4">Option 4</Menu.Item>
-	          </MenuItemGroup>
+		<Menu mode={siderFold?"vertical":"inline"} {...menuProps}>
+			<Menu.Item key="0">
+				<Link to="/user"><Icon type="user"/>Users</Link>
+			</Menu.Item>
+			<Menu.Item key="1">
+				<Link to="/user"><Icon type="laptop"/>Dashboard</Link>
+			</Menu.Item>
+			<Menu.Item key="2">
+				<Link to="/user"><Icon type="camera-o"/>UI Elements</Link>
+			</Menu.Item>
+			<SubMenu key="3" title={<span><Icon type="mail" /><span>Recharts</span></span>}>
+	          	<Menu.Item key="3_1">
+					<Link to="/user"><Icon type="line-chart"/>LineChart</Link>
+				</Menu.Item>
+				<Menu.Item key="3_2">
+					<Link to="/user"><Icon type="bar-chart"/>BarChart</Link>
+				</Menu.Item>
+				<Menu.Item key="3_3">
+					<Link to="/user"><Icon type="area-chart"/>AreaChart</Link>
+				</Menu.Item>
         	</SubMenu>
-	        <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
-	          <Menu.Item key="5">Option 5</Menu.Item>
-	          <Menu.Item key="6">Option 6</Menu.Item>
-	          <SubMenu key="sub3" title="Submenu">
-	            <Menu.Item key="7">Option 7</Menu.Item>
-	            <Menu.Item key="8">Option 8</Menu.Item>
-	          </SubMenu>
-	        </SubMenu>
-	        <SubMenu key="sub4" title={<span><Icon type="setting" /><span>Navigation Three</span></span>}>
-	          <Menu.Item key="9">Option 9</Menu.Item>
-	          <Menu.Item key="10">Option 10</Menu.Item>
-	          <Menu.Item key="11">Option 11</Menu.Item>
-	          <Menu.Item key="12">Option 12</Menu.Item>
+	        <SubMenu key="4" title={<span><Icon type="appstore" /><span>Test</span></span>}>
+	          	<Menu.Item key="4_1">
+					<Link to="/user"><Icon type="bar-chart"/>test1</Link>
+				</Menu.Item>
+				<Menu.Item key="4_2">
+					<Link to="/user"><Icon type="area-chart"/>test2</Link>
+				</Menu.Item>
 	        </SubMenu>
 		</Menu>
 	)
@@ -56,5 +69,6 @@ const Menus=({siderFold,navOpenKeys})=>{
 Menus.PropTypes={
 	siderFold:PropTypes.bool,
 	openKeys:PropTypes.array,
+	changeOpenkeys:PropTypes.func
 }
 export default Menus;

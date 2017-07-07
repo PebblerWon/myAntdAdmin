@@ -14,7 +14,6 @@ const Login = ({
 	    validateFields
 	}
 })=>{
-  console.log(login);
 	function handleSubmit(e){
 		e.preventDefault();
 	    validateFields((err, values) => {
@@ -56,4 +55,4 @@ const Login = ({
 
 export default connect(
 	({login})=>({login})
-	)(Form.create()(Login))
+)(Form.create()(Login))

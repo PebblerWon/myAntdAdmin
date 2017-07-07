@@ -8,11 +8,16 @@ import { classnames, config, menu } from '../utils'
 
 const { Header, Menu, Bread, Sider, styles} = Layout
 const { iconFontJS, iconFontCSS, logo } = config
-const App = ({children,siderFold,navOpenKeys,dispatch,app})=>{
+const App = ({children,dispatch,app})=>{
+	const {user,menuPopoverVisible,siderFold,darkTheme,isNavbar,navOpenKeys} = app
 	const siderProps={
 		siderFold,
-		navOpenKeys
+		navOpenKeys,
+		changeOpenkeys(openKeys){
+			dispatch({type:'app/handleNavOpenKeys',payload:{navOpenKeys:openKeys}})
+		}
 	}
+	
 	function onbtnclick(e){
 		e.preventDefault();
 		dispatch({type:'app/test'})
@@ -47,4 +52,4 @@ const App = ({children,siderFold,navOpenKeys,dispatch,app})=>{
 
 export default connect(
 	({app})=>({app})
-	)(App);
+)(App);
