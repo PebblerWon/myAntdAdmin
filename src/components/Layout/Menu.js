@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import{Menu,Icon} from 'antd'
+import {Menu,Icon} from 'antd'
 import {Link} from 'dva/router'
 import{arrayToTree,queryArray} from '../../utils'
 import pathToRegexp from 'path-to-regexp'
@@ -39,7 +39,7 @@ const Menus=({siderFold,navOpenKeys,changeOpenkeys})=>{
 				<Link to="/user"><Icon type="user"/>Users</Link>
 			</Menu.Item>
 			<Menu.Item key="1">
-				<Link to="/user"><Icon type="laptop"/>Dashboard</Link>
+				<Link to="/photo"><Icon type="laptop"/>Photos</Link>
 			</Menu.Item>
 			<Menu.Item key="2">
 				<Link to="/user"><Icon type="camera-o"/>UI Elements</Link>

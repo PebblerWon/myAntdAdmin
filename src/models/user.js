@@ -21,6 +21,7 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup ({ dispatch, history }) {
       history.listen(location => {
+        console.log("history")
         if (location.pathname === '/user') {
           dispatch({
             type: 'query',
@@ -32,18 +33,19 @@ export default modelExtend(pageModel, {
   },
 
   effects: {
-
     *query ({ payload = {} }, { call, put }) {
       const data = yield call(query, payload)
       if (data) {
+        console.log(data);
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.data,
+            //list: data.data,
+            list:data,
             pagination: {
               current: Number(payload.page) || 1,
-              pageSize: Number(payload.pageSize) || 10,
-              total: data.total,
+              pageSize: Number(payload.pageSize) || 5,
+              total:data.length
             },
           },
         })
