@@ -18,7 +18,7 @@ module.exports = {
     userInfo: `${APIV1}/userInfo`,
     users: `${APIV1}/users`,
     posts: `${APIV1}/posts`,
-    user: `${APIV1}/user/:id`,
+    user: `${APIV1}/users/:id`,
     dashboard: `${APIV1}/dashboard`,
     v1test: `${APIV1}/test`,
     v2test: `${APIV2}/test`,

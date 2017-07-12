@@ -7,18 +7,25 @@ export default {
   namespace: 'login',
 
   state: {
+    loginLoading:false,
   	username:'abc',
   },
 
   effects: {
     *login({ payload }, { call, put }) {  // eslint-disable-line
       console.log(payload);
-      const data = yield call(loginService.fetch,{page:1})
+      const data = yield call(loginService.login,payload)
       console.log(data);
-      if(data[0].id!=null){
+      if(data.success){
         const from = queryURL('from')
-        console.log(from)
-        yield put(routerRedux.push('/index'))
+        if(from){
+          yield put(routerRedux.push(from))
+        }else{
+          yield put(routerRedux.push('/'))
+        }
+        
+      }else{
+        throw data
       }
     },
     *test({payload},{call,put}){
@@ -27,6 +34,18 @@ export default {
   },
 
   reducers: {
+    showLoginLoading(state){
+      return{
+        ...state,
+        loginLoading:true,
+      }
+    },
+    hideLoginLoading(state){
+      return{
+        ...state,
+        loginLoading:false,
+      }
+    },
     save(state, action) {
       return { ...state, ...action.payload };
     },

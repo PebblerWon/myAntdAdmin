@@ -19,7 +19,7 @@ const List = ({...prop})=>{
 			title:'Name',
 			dataIndex:'name',
 			key:'name',
-			render:(text,record)=><Link to={`user/${record.id}`}>{text}</Link>,
+			render:(text,record)=><Link to={`users/${record.id}`}>{text}</Link>,
 		},{
 	    	title:'Gender',
 	    	dataIndex:'isMale',

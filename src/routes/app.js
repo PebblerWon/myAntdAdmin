@@ -8,7 +8,7 @@ import { classnames, config, menu } from '../utils'
 
 const { Header, Menu, Bread, Sider, styles} = Layout
 const { iconFontJS, iconFontCSS, logo } = config
-const App = ({children,dispatch,app})=>{
+const App = ({children,dispatch,app,loading})=>{
 	const {user,menuPopoverVisible,siderFold,darkTheme,isNavbar,navOpenKeys} = app
 	const siderProps={
 		siderFold,
@@ -49,7 +49,11 @@ const App = ({children,dispatch,app})=>{
     	</div>
     )
 }
-
+App.propTypes={
+	children:PropTypes.element,
+	location:PropTypes.object,
+	dispatch:PropTypes.func,
+}
 export default connect(
-	({app})=>({app})
+	({app,loading})=>({app,loading})
 )(App);
