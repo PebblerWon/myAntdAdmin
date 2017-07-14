@@ -1,4 +1,4 @@
-import * as loginService from '../services/loginService'
+import {login} from '../services/login'
 import {queryURL} from '../utils'
 import {routerRedux} from 'dva/router'
 
@@ -14,10 +14,11 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {  // eslint-disable-line
       console.log(payload);
-      const data = yield call(loginService.login,payload)
+      const data = yield call(login,payload)
       console.log(data);
       if(data.success){
         const from = queryURL('from')
+        yield put({type:'app/query',payload:data.user})
         if(from){
           yield put(routerRedux.push(from))
         }else{

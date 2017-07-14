@@ -60,7 +60,7 @@ const Menus=({siderFold,navOpenKeys,changeOpenkeys})=>{
 					<Link to="/user"><Icon type="bar-chart"/>test1</Link>
 				</Menu.Item>
 				<Menu.Item key="4_2">
-					<Link to="/user"><Icon type="area-chart"/>test2</Link>
+					<Link to="/error"><Icon type="area-chart"/>test2</Link>
 				</Menu.Item>
 	        </SubMenu>
 		</Menu>

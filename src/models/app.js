@@ -1,5 +1,5 @@
-/*import { query, logout } from '../services/app'*/
-import {login} from '../services/loginService'
+import { query, logout } from '../services/app'
+/*import {login,logout} from '../services/loginService'*/
 import { routerRedux } from 'dva/router'
 import { parse } from 'qs'
 import { config } from '../utils'
@@ -16,34 +16,34 @@ export default {
     navOpenKeys: [],
   },
   subscriptions:{
-    setup({dispatch}){
+
+    setup({history,dispatch}){
       dispatch({type:'query'})
       let tid
       window.onresize = () => {
         clearTimeout(tid)
         tid = setTimeout(() => {
           dispatch({ type: 'changeNavbar' })
-        }, 600)
+        }, 300)
       }
     }
   } , 
   effects:{
     *query({payload,},{call,put}){
-      const data = yield call(login,payload)
+      const data = yield call(query,parse(payload))
       console.log(data)
-      if(data&&data.success && data.user){
+      if(data.success && data.user){
         yield put({
           type:'querySuccess',
           payload:data.user,
         })
-        console.log(pathname)
-        if(location.pathname === 'login'){
+        console.log(location.pathname)
+        if(location.pathname === '/login'){
           yield put(routerRedux.push('/user'))
         }
       }else{
           if(config.openPages && config.openPages.indexOf(location.pathname)<0){
             let from = location.pathname
-            console.log(from)
             window.location = `${location.origin}/login?from=${from}`
           }
       }
@@ -55,9 +55,18 @@ export default {
         yield put({ type: 'handleNavbar', payload: isNavbar })
       }
     },
+    *logout({payload},{call,put}){
+      const data = yield call(logout,parse(payload))
+      if(data.success){
+        yield put(routerRedux.push('/login'))
+      }else{
+        throw(data)
+      }
+    }
   },
   reducers: {
     querySuccess (state, { payload: user }) {
+      console.log('querySuccess')
       return {
         ...state,
         user,

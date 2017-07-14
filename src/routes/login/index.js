@@ -9,7 +9,7 @@ const Login = ({
 	login,
 	dispatch,
 	form:{
-		getFieldDecorator,
+		  getFieldDecorator,
 	    validateFieldsAndScroll,
 	    validateFields
 	}

@@ -1,25 +1,78 @@
-import React from 'react';
-import { Router, Route,IndexRoute } from 'dva/router';
-import IndexPage from './routes/IndexPage';
-import Login from './routes/login';
-import Example from './components/Example';
-import App from './routes/app.js';
-import Menu from './components/Layout/Menu.js'
-import User from './routes/user'
-import Photo from './routes/photo'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Router } from 'dva/router'
+import App from './routes/app'
 
-function RouterConfig({ history ,app}) {
-	return (
-	<Router history={history}>
-		<Route path="/" component={App}>
-			<IndexRoute component={Example}></IndexRoute>
-			<Route path="/user" component={User} />
-			<Route path="/photo" component={Photo} />
-			<Route path="/example" component={Example} />
-			<Route path="/login" component={Login} />
-		</Route>
-	</Router>
-	);
+const registerModel = (app, model) => {
+  if (!(app._models.filter(m => m.namespace === model.namespace).length === 1)) {
+    app.model(model)
+  }
 }
 
-export default RouterConfig;
+const Routers = function ({ history, app }) {
+  //console.log(app)
+  const routes = [
+    {
+      path: '/login',
+      getIndexRoute (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/login'))
+          cb(null, { component: require('./routes/login/') })
+        }, 'login')
+      },
+    },
+    {
+      path: '/',
+      component: App,
+      getIndexRoute (nextState, cb) {
+        require.ensure([], require => {
+          //registerModel(app, require('./models/Example'))
+          cb(null, { component: require('./components/Example') })
+        }, 'Example')
+      },
+      childRoutes: [
+        {
+          path: 'photo',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/photo'))
+              cb(null, require('./routes/photo'))
+            }, 'photo')
+          },
+        }, {
+          path: 'user',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/user'))
+              cb(null, require('./routes/user/'))
+            }, 'user')
+          },
+        }, {
+          path: 'users/:id',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/user/detail'))
+              cb(null, require('./routes/user/Detail/'))
+            }, 'user-detail')
+          },
+        }, {
+          path: '*',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./routes/error/'))
+            }, 'error')
+          },
+        },
+      ],
+    },
+  ]
+
+  return <Router history={history} routes={routes} />
+}
+
+Routers.propTypes = {
+  history: PropTypes.object,
+  app: PropTypes.object,
+}
+
+export default Routers

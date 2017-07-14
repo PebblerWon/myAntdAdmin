@@ -6,7 +6,7 @@ export async function login(params){
 	return request({
 		url:userLogin,
 		method:'post',
-		data:'params',
+		data:params,
 	})
 }
 

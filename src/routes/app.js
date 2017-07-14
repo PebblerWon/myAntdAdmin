@@ -9,6 +9,7 @@ import { classnames, config, menu } from '../utils'
 const { Header, Menu, Bread, Sider, styles} = Layout
 const { iconFontJS, iconFontCSS, logo } = config
 const App = ({children,dispatch,app,loading})=>{
+	console.log(app)
 	const {user,menuPopoverVisible,siderFold,darkTheme,isNavbar,navOpenKeys} = app
 	const siderProps={
 		siderFold,
@@ -18,6 +19,28 @@ const App = ({children,dispatch,app,loading})=>{
 		}
 	}
 	
+	const headerProps={
+		user,
+		siderFold,
+		location,
+		isNavbar,
+		menuPopoverVisible,
+		navOpenKeys,
+		menuProps:siderProps,
+		logout(){
+			console.log('logout')
+		},
+		switchSider(){
+			console.log('switchSider')
+		},
+		siderFold(){
+			console.log('siderFold')
+		},
+		switchMenuPopover(){
+			console.log('switchMenuPopover')
+		}
+	}
+
 	function onbtnclick(e){
 		e.preventDefault();
 		dispatch({type:'app/test'})
@@ -36,7 +59,7 @@ const App = ({children,dispatch,app,loading})=>{
 	          <Sider {...siderProps}/>
 	        </aside> 
 	        <div className={styles.main}>
-	          <Header/>
+	          <Header {...headerProps}/>
 	          <Bread/>
 	          <div className={styles.container}>
 	            <div className={styles.content}>
